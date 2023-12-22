@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Food Delivery</title>
+    <link rel="stylesheet" href="htmlcss/style.css">
+    <style>
+        .card{
+            background-color: #ff6633;
+        }
+        .foto{
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            max-height: 100%;
+            max-width: 100%;
+            display: block;
+            margin: auto;
+        }
+        .dishes{
+            display: grid;
+            /*grid-template-columns: 3;*/
+        }
+
+        header {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: flex-start;
+            align-items: center;
+            background-color: #ff6633;
+
+        }
+        .menu {
+            flex-grow: 1;
+        }
+        .menu ul {
+            display: flex;
+            flex-flow: row nowrap;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .menu li {
+            margin-right: 20px;
+        }
+        .menu li:last-child {
+            margin-right: 0;
+        }
+        .menu a {
+            padding: 8px 10px;
+        }
+        .logo {
+            margin-right: 30px;
+            color: black;
+        }
+        .menu a,
+        .menu .active {
+            display: block;
+            padding: 8px 10px;
+        }
+        .menu .active {
+            color: #fff;
+            background-color: #ff3d00;
+            border-radius: 8px;
+        }
+        .menu ul {
+            display: flex;
+            flex-flow: row nowrap;
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            line-height: 18px;
+            list-style: none;
+        }
+        .menu a,
+        .menu .active {
+            display: block;
+            padding: 8px 10px;
+            text-transform: uppercase;
+            letter-spacing: .27em;
+        }
+        .menu a {
+            color: #000;
+            text-decoration: none;
+        }
+        .menu ul {
+            display: flex;
+            flex-flow: row nowrap;
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            line-height: 18px;
+            list-style: none;
+        }
+        .menu a,
+        .menu .active {
+            display: block;
+            padding: 8px 10px;
+            text-transform: uppercase;
+            letter-spacing: .27em;
+        }
+        .menu a {
+            color: #000;
+            text-decoration: none;
+        }
+        .tel {
+            font-size: 20px;
+            line-height: 24px;
+            padding: 2px;
+            margin: auto;
+        }
+        .tel a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .wrapper {
+            display: inline-block;
+            position: relative;
+            justify-content: center;
+            align-items: center;
+            /*min-height: 100vh;*/
+        }
+        .user {
+            width: 100px;
+        height: 100px;
+        border: 12px solid red;
+        border-radius: 50%;
+        position: relative;
+        overflow: hidden;
+        background-color: red;
+        }
+        .user::before {
+            content : '';
+        display: block;
+            width: 37px;
+        height: 37px;
+        background: #fff;
+        border-radius: 50%;
+        position: absolute;
+        left: 50%;
+        top: 5px;
+            transform: translateX(-50%);
+        }
+        .user::after {
+            content : '';
+            display: block;
+            width: 75px;
+            height: 75px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            bottom: -40px;
+            transform: translateX(-50%);
+        }
+        .cards {
+            display: grid;
+            /* Автоматически заполняем на всю ширину grid-контейнера */
+            grid-template-columns: repeat(auto-fill, 225px);
+            width: 100%;
+            max-width: 1000px; /* Ширина grid-контейнера */
+            justify-content: center;
+            justify-items: center; /* Размещаем карточку по центру */
+            column-gap: 30px; /* Отступ между колонками */
+            row-gap: 40px; /* Отступ между рядами */
+            margin: 0 auto;
+        }
+        /* Стиль поля поиска */
+        form.example input[type=text] {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid grey;
+            float: left;
+            width: 80%;
+            background: #f1f1f1;
+        }
+
+        /* Стиль кнопки "Отправить" */
+        form.example button {
+            float: left;
+            width: 20%;
+            padding: 10px;
+            background: #0b7dda;
+            color: white;
+            font-size: 17px;
+            border: 1px solid grey;
+            border-left: none; /* Предотвращение двойных границ */
+            cursor: pointer;
+        }
+
+        form.example button:hover {
+            background: #0b7dda;
+        }
+
+
+        /*input::-webkit-input-placeholder {*/
+        /*    color: #a5c0b6;*/
+        /*    font-style: italic;*/
+        /*    background: #ffffff;*/
+        /*}*/
+        /*input:-moz-placeholder {*/
+        /*    color: #B6C0A5;*/
+        /*    font-style: italic;*/
+        /*    background: #ffffff;*/
+        /*}*/
+        /*input:-ms-input-placeholder {*/
+        /*    color: #B6C0A5;*/
+        /*    font-style: italic;*/
+        /*    background: #ffffff;*/
+        /*}*/
+
+        <!-- CSS-стили модального окна -->
+
+             /* Стили всплывающего окна по-умолчанию */
+         .modal {
+             position: fixed; /* фиксированное положение */
+             top: 0;
+             right: 0;
+             bottom: 0;
+             left: 0;
+             background: rgba(0,0,0,0.5); /* фон */
+             z-index: 1050;
+             opacity: 0; /* по умолчанию модальное окно прозрачно */
+             -webkit-transition: opacity 200ms ease-in;
+             -moz-transition: opacity 200ms ease-in;
+             transition: opacity 200ms ease-in; /* анимация перехода */
+             pointer-events: none; /* элемент невидим для событий мыши */
+             margin: 0;
+             padding: 0;
+         }
+        /* При отображении модального окно */
+        .modal:target {
+            opacity: 1; /* делаем окно видимым */
+            pointer-events: auto; /* элемент видим для событий мыши */
+            overflow-y: auto; /* добавляем прокрутку по y, когда элемент не помещается на страницу */
+        }
+        /* ширина модального окна и его отступы от экрана */
+        .modal-dialog {
+            position: relative;
+            width: auto;
+            margin: 10px;
+        }
+        @media (min-width: 576px) {
+            .modal-dialog {
+                max-width: 500px;
+                margin: 30px auto; /* отображение окна по центру */
+            }
+        }
+        /* Стили для блока с контентом окна */
+        .modal-content {
+            position: relative;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            background-color: #fff;
+            -webkit-background-clip: padding-box;
+            background-clip: padding-box;
+            border: 1px solid rgba(0,0,0,.2);
+            border-radius: .3rem;
+            outline: 0;
+        }
+        @media (min-width: 768px) {
+            .modal-content {
+                -webkit-box-shadow: 0 5px 15px rgba(0,0,0,.5);
+                box-shadow: 0 5px 15px rgba(0,0,0,.5);
+            }
+        }
+        /* Стили заголовка окна */
+        .modal-header {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: justify;
+            -webkit-justify-content: space-between;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #eceeef;
+        }
+        .modal-title {
+            margin-top: 0;
+            margin-bottom: 0;
+            line-height: 1.5;
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+        /* Стили кнопки "х" ("Закрыть")  */
+        .close {
+            float: right;
+            font-family: sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            opacity: .5;
+            text-decoration: none;
+        }
+        /* Стили для закрывающей кнопки в фокусе или наведении */
+        .close:focus, .close:hover {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+            opacity: .75;
+        }
+        /* Стили блока основного содержимого окна */
+        .modal-body {
+            position: relative;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1 1 auto;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            padding: 15px;
+            overflow: auto;
+        }
+
+        /*стили всплывающего окна*/
+        .container{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #click{
+            display: none;
+        }
+        #click:checked ~ .popup{
+            display: flex;
+        }
+        .btn{
+            display: inline-block;
+            background-color: #f1f1f1;
+            color: #ff6633;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .popup{
+            display: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            justify-content: center;
+            align-items: center;
+        }
+        .window{
+            position: absolute;
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid #c8c8c8;
+            background-color: #f1f1f1;
+            z-index: 100;
+        }
+        .title,
+        .body2{
+            padding: 20px;
+            border-bottom: 1px solid silver;
+        }
+        .bottom{
+            padding: 20px;
+            display: flex;
+            justify-content: end;
+        }
+        .title h1{
+            font-size: 22px;
+        }
+        .bottom .close{
+            padding: 10px 100px;
+            background-color: #ff6633;
+            color: #f1f1f1;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<!--<body style="background-color: #dfeef5">-->
+<body style="background-color: #fdf8f4">
+
+<header>
+    <div class="logo" style="color: black">
+        Доставка
+    </div>
+    <div class="menu">
+        <form>
+            <input class="place_for_search" type="text" id="text-to-find" value="" placeholder="Поиск" autofocus>
+            <input class="button_for_turn_back" type="button" onclick="javascript: FindOnPage('text-to-find',false); return false;" value=" " title="Отменить поиск">
+            <input class="button_for_search" type="submit" onclick="javascript: FindOnPage('text-to-find',true); return false;" value=" " title="Начать поиск">
+        </form>
+    </div>
+    <div class="tel">
+        <button onclick="addDeliveryAddress()">Добавить адрес доставки</button>
+        <button onclick="redirectToYourShopBag()">Корзина товаров</button>
+        <button onclick="redirectToSignUp()">Войти</button>
+        <button onclick="redirectToSignIn()">Зарегистрироваться</button>
+    </div>
+</header>
+
+<h1 style="text-align: center">Доставка еды</h1>
+
+<div >
+    <h2>Меню</h2>
+    <div class="dishes">
+        <!-- Сетка карточек товаров -->
+        <div class="cards" >
+            <!-- Карточка товара -->
+            <div class="card" id="breakfast">
+                <img class="foto" src="https://kazan.eshak.ru/images/virtuemart/category/resized/5148_500x340.jpg">
+                <div>Завтраки</div>
+                <div>Цена: от 785</div>
+                <button onclick="addToCart(1)"><a href="#openModal">Купить</a></button>
+                <button style="background-color: #70e4e8">В коризину</button>
+
+            </div>
+            <div class="card" id="fish">
+                <img class="foto" src="https://kazan.eshak.ru/images/virtuemart/category/resized/3861_500x340_500x340_500x340.jpg">
+                <div>Рыба и морепродукты</div>
+                <div>Цена: от 2785</div>
+                <button onclick="addToCart(2)">Купить</button>
+                <button style="background-color: #70e4e8">В коризину</button>
+            </div>
+            <div class="card" id="meat">
+                <img class="foto" src="https://kazan.eshak.ru/images/virtuemart/category/resized/4213_500x340_500x340_500x340.jpg">
+                <div>Мясные блюда</div>
+                <div>Цена: от 1785</div>
+                <button onclick="addToCart(3)">Купить</button>
+                <button style="background-color: #70e4e8">В коризину</button>
+            </div>
+            <div class="card" id="salad">
+                <img class="foto" src="https://kazan.eshak.ru/images/virtuemart/category/resized/3045_500x340.jpg">
+                <div>Салаты</div>
+                <div>Цена: от 785</div>
+                <button onclick="addToCart(4)">Купить</button>
+                <button style="background-color: #70e4e8">В коризину</button>
+            </div>
+            <div class="card" id="soup">
+                <img class="foto" src="https://kazan.eshak.ru/images/virtuemart/category/resized/2355_500x3403_500x340.jpg">
+                <div>Супы</div>
+                <div>Цена: от 285</div>
+                <button onclick="addToCart(5)">Купить</button>
+                <button style="background-color: #70e4e8">В коризину</button>
+            </div>
+            <div class="card" id="desert">
+                <img class="foto" src="https://kazan.eshak.ru/images/virtuemart/category/resized/shu-s-kremom-i-grushevym-sorbetom-4_500x340_500x340_500x340.jpg">
+                <div>Десерты</div>
+                <div>Цена: от 585</div>
+                <button onclick="addToCart(6)">Купить</button>
+                <button style="background-color: #70e4e8">В коризину</button>
+            </div>
+
+            <div class="card" id="drinks">
+                <img class="foto" src="https://avatars.mds.yandex.net/i?id=b0cc882ac2efd9e594643cc75771202910efd6d1-9870747-images-thumbs&n=13">
+                <div>Напитки</div>
+                <div>Цена: от 200</div>
+                <button onclick="addToCart(7)">Купить</button>
+                <button style="background-color: #70e4e8">В коризину</button>
+            </div>
+
+            <div class="card" id="childfood">
+                <img class="foto" src="https://od.cf.ua/image?src=/m/blog/5996ca44a4d1c0fa1570098c0c14c778/images/klever-kaver-5df8a58c2977d.jpg&width=412">
+
+                <div>Детский набор</div>
+                <div>Цена: от 400</div>
+                <button onclick="addToCart(8)">Купить</button>
+                <button style="background-color: #70e4e8">В коризину</button>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container">
+        <input type="checkbox" id="click" />
+        <label for="click" class="btn">Click me</label>
+        <div class="popup">
+            <div class="window">
+                <div class="title">
+                    <h4>О продукте</h4>
+                </div>
+                <div class="body2">
+                    <p>
+                        <li>Блюда высокого качества</li>
+                        <li>Повара мешленовского уровня</li>
+                        <li>Быстрая доставка</li>
+                        <li>Качественные продукты</li>
+                    </p>
+                </div>
+                <div class="bottom">
+                    <label for="click" class="close">Close</label>
+                </div>
+            </div>
+            <div class="blackout"></div>
+        </div>
+    </div>
+</div>
+
+<div id="openModal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Заголовок</h3>
+                <a href="#close" title="Close" class="close">×</a>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Блюда высокого качества</li>
+                    <li>Повара мешленовского уровня</li>
+                    <li>Быстрая доставка</li>
+                    <li>Качественные продукты</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="close">
+
+</div>
+<script>
+    function redirectToSignIn() {
+        window.location.href = "http://localhost:8080/FoodDelivery/signIn";
+    }
+    function redirectToSignUp() {
+        window.location.href = "http://localhost:8080/FoodDelivery/signUp";
+    }
+    function redirectToYourShopBag() {
+        window.location.href = "http://localhost:8080/FoodDelivery/shoppingCard";
+    }
+    function addDeliveryAddress() {
+        // Создаем экземпляр карты
+        var map = new ymaps.Map('map', {
+            center: [55.751574, 37.573856],
+            zoom: 10,
+            controls: []
+        });
+
+        // Создаем экземпляр элемента управления "Поиск по карте"
+        var searchControl = new ymaps.control.SearchControl({
+            options: {
+                provider: 'yandex#search'
+            }
+        });
+
+        // Добавляем элемент управления на карту
+        map.controls.add(searchControl);
+
+        // При выборе адреса
+        searchControl.events.add('resultselect', function (e) {
+            var selected = searchControl.getResultsArray()[e.get('index')];
+            var address = selected.properties.get('text');
+
+            // Добавьте здесь код для сохранения адреса в базу данных
+
+            alert('Адрес доставки добавлен: ' + address);
+        });
+    }
+    function addToCart(Id) {
+
+        const dish = getProductById(productId);
+        addToShoppingCart(product);
+        alert("Товар успешно добавлен в корзину!");
+    }
+
+    var input,search,pr,result,result_arr, locale_HTML, result_store;
+
+    function func() {
+        locale_HTML = document.body.innerHTML;   // сохраняем в переменную весь body (Первоначальный)
+    }
+    setTimeout(func, 1000);  //ждем подгрузки Jsona и выполняем
+
+    function FindOnPage(name, status) {
+
+        input = document.getElementById(name).value; //получаем значение из поля в html
+
+        if(input.length<3&&status==true)
+        {
+            alert('Для поиска вы должны ввести три или более символов');
+            function FindOnPageBack() { document.body.innerHTML = locale_HTML; }
+        }
+
+        if(input.length>=3)
+        {
+            function FindOnPageGo() {
+
+                search = '/'+input+'/g';  //делаем из строки регуярное выражение
+                pr = document.body.innerHTML;   // сохраняем в переменную весь body
+                result = pr.match(/>(.*?)</g);  //отсекаем все теги и получаем только текст
+                result_arr = [];   //в этом массиве будем хранить результат работы (подсветку)
+
+                var warning = true;
+                for(var i=0;i<result.length;i++) {
+                    if(result[i].match(eval(search))!=null) {
+                        warning = false;
+                    }
+                }
+                if(warning == true) {
+                    alert('Не найдено ни одного совпадения');
+                }
+
+                for(var i=0; i<result.length;i++) {
+                    result_arr[i] = result[i].replace(eval(search), '<span style="background-color:yellow;">'+input+'</span>'); //находим нужные элементы, задаем стиль и сохраняем в новый массив
+                }
+                for(var i=0; i<result.length;i++) {
+                    pr=pr.replace(result[i],result_arr[i])  //заменяем в переменной с html текст на новый из новогом ассива
+                }
+                document.body.innerHTML = pr;  //заменяем html код
+            }
+        }
+        function FindOnPageBack() { document.body.innerHTML = locale_HTML; }
+        if(status) { FindOnPageBack(); FindOnPageGo(); } //чистим прошлое и Выделяем найденное
+        if(!status) { FindOnPageBack(); } //Снимаем выделение
+    }
+
+
+
+</script>
+</body>
+</html>
